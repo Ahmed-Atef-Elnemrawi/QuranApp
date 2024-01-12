@@ -1,5 +1,5 @@
 import { ElementRef, Renderer2, inject } from '@angular/core';
-import { isString } from 'lodash';
+import {isString} from 'lodash'
 
 export class Utils {
   private el = inject(ElementRef);
