@@ -10,6 +10,7 @@ module.exports = {
         'text': 'var(--text)',
         'background': 'var(--background)',
         'primary': 'var(--primary)',
+        'container':'var(--container)',
         'secondary': 'var(--secondary)',
         'accent': 'var(--accent)',
        },

@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Subscription, fromEvent, debounceTime, tap } from 'rxjs';
-import { Utils } from '../../core/shared/dom.utils';
+import { Utils } from '../../shared/dom.utils';
 
 @Component({
   selector: 'header-search',
@@ -50,7 +50,7 @@ import { Utils } from '../../core/shared/dom.utils';
     </span>
 
     <div id="form-container" class="hidden sm:block z-50">
-      <div id="search-form" class="w-fit shadow-sm flex">
+      <div id="search-form" class="w-fit  flex">
         <input
           type="text"
           [(ngModel)]="query"

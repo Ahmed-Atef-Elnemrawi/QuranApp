@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Language } from '../data-access/data.service';
-import { Utils } from '../../core/shared/dom.utils';
+import { Utils } from '../../shared/dom.utils';
 
 @Component({
   selector: 'header-lang',
