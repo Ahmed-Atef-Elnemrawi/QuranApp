@@ -1,1 +1,73 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --text: #080808;
+    --background: #d0d9e2;
+    --container:#c7d2dd;
+    --primary: #afc0cf;
+    --secondary: #a3b6c8;
+    --accent: #7e9fbe;
+  }
+  .dark {
+    --text: #f7f7f7;
+    --background: #1d262f;
+    --container:#222d38;
+    --primary: #304150;
+    --secondary: #374b5c;
+    --accent: #416281;
+  }
+
+html:not(h1, h2, h3, h4, h5, h6) {
+  font-family: "Rubik";
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "NotoSerif";
+}
+}
+
+@font-face {
+font-family: "NotoSerif";
+src: url(./assets/fonts/NotoSerif-Regular.woff) format("woff");
+font-weight: 400;
+}
+@font-face {
+font-family: "NotoSerif";
+src: url(./assets/fonts/NotoSerif-Medium.woff) format("woff");
+font-weight: 500;
+}
+@font-face {
+font-family: "NotoSerif";
+src: url(./assets/fonts/NotoSerif-SemiBold.woff) format("woff2");
+font-weight: 600;
+}
+@font-face {
+font-family: "NotoSerif";
+src: url(./assets/fonts/NotoSerif-Bold.woff) format("woff2");
+font-weight: 700;
+}
+@font-face {
+font-family: "Rubik";
+src: url(./assets/fonts/Rubik-Regular.woff2) format("woff2");
+font-weight: 400;
+}
+@font-face {
+font-family: "Rubik";
+src: url(./assets/fonts/Rubik-Medium.woff2) format("woff2");
+font-weight: 500;
+}
+@font-face {
+font-family: "Rubik";
+src: url(./assets/fonts/Rubik-Bold.woff2) format("woff2");
+font-weight: 700;
+}
+
