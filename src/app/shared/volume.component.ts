@@ -8,6 +8,8 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   forwardRef,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -54,6 +56,7 @@ export class VolumeComponent implements ControlValueAccessor, AfterViewInit {
   @Input() height: string = '100px';
   @Input() max: number = 100;
   @Input() step: number = 1;
+  @Output() mouseMove = new EventEmitter<number>();
 
   private isDragging = false;
   private containerRect!: DOMRect;
@@ -128,6 +131,7 @@ export class VolumeComponent implements ControlValueAccessor, AfterViewInit {
     if (this.isDragging) {
       this.currentThumbPosition = this.containerRect.bottom - event.y;
       this.updateThumbAndTrackerPositions(this.currentThumbPosition);
+      this.mouseMove.emit(this.value);
     }
   }
 
