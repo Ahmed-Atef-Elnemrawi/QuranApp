@@ -8,6 +8,8 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   forwardRef,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -47,9 +49,7 @@ import { CommonModule } from '@angular/common';
     `,
   ],
 })
-export class SliderComponent
-  implements ControlValueAccessor, AfterViewInit
-{
+export class SliderComponent implements ControlValueAccessor, AfterViewInit {
   @ViewChild('rangeContainer', { static: true }) rangeContainer!: ElementRef;
   @ViewChild('rangeThumb', { static: true }) rangeThumb!: ElementRef;
   @ViewChild('skippedTracker', { static: true }) skippedTracker!: ElementRef;
@@ -57,6 +57,7 @@ export class SliderComponent
   @Input() width: string = '50px';
   @Input() max: number = 100;
   @Input() step: number = 1;
+  @Output() mouseMove = new EventEmitter<number>();
 
   private isDragging = false;
   private containerRect!: DOMRect;
@@ -131,6 +132,7 @@ export class SliderComponent
     if (this.isDragging) {
       this.currentThumbPosition = event.clientX - this.containerRect.left;
       this.updateThumbAndTrackerPositions(this.currentThumbPosition);
+      this.mouseMove.emit(this.value);
     }
   }
 
@@ -154,7 +156,12 @@ export class SliderComponent
   }
 
   writeValue(value: number): void {
-    this.renderer.setProperty(this.el.nativeElement, 'value', value);
+    this.value = value;
+    if (this.containerRect && this.thumbRect) {
+      const totalWidth = this.containerRect.width - this.thumbRect.width;
+      const position = (value * totalWidth) / this.max;
+      this.updateThumbAndTrackerPositions(position);
+    }
   }
 
   registerOnChange(fn: any): void {
