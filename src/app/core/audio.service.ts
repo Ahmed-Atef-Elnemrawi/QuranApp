@@ -3,10 +3,9 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { AudioState, AudioStateManager } from './audio-state-manager';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn:'root'
 })
-export class AudioService {
-  #renderer = inject(Renderer2);
+export class AudioService{
   #audio = new Audio();
   #stateManager = new AudioStateManager(this.#audio);
   #stop$ = new Subject<void>();
@@ -25,6 +24,7 @@ export class AudioService {
   playStream(url: string): Observable<Event> {
     return this.streamObservable(url).pipe(takeUntil(this.#stop$));
   }
+
 
   play(): void {
     this.#audio.play();
@@ -64,7 +64,10 @@ export class AudioService {
 
       this.addEvents(this.#audio, this.#audioEvents, eventHandler);
 
-      return () => this.cleanupAudioEl();
+      return () => {
+        this.cleanupAudioEl();
+        this.removeEvents(this.#audio,this.#audioEvents, eventHandler)
+      };
     });
   }
 
@@ -86,7 +89,17 @@ export class AudioService {
     handler: (event: Event) => void
   ): void {
     events.forEach((event) => {
-      this.#renderer.listen(obj, event, handler);
+      obj.addEventListener(event, handler);
+    });
+  }
+  
+  private removeEvents(
+    obj: HTMLAudioElement,
+    events: string[],
+    handler: (event: Event) => void
+  ): void {
+    events.forEach((event) => {
+      obj.removeEventListener(event, handler);
     });
   }
 }
