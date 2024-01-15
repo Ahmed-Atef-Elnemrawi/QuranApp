@@ -58,6 +58,7 @@ export class SliderComponent implements ControlValueAccessor, AfterViewInit {
   @Input() max: number = 100;
   @Input() step: number = 1;
   @Output() mouseMove = new EventEmitter<number>();
+  @Output() mouseDown = new EventEmitter<number>();
 
   private isDragging = false;
   private containerRect!: DOMRect;
@@ -77,6 +78,10 @@ export class SliderComponent implements ControlValueAccessor, AfterViewInit {
 
   private setupInitialView(): void {
     this.setStyle(this.rangeContainer.nativeElement, { width: this.width });
+    this.containerRect =
+      this.rangeContainer.nativeElement.getBoundingClientRect();
+    this.thumbRect = this.rangeThumb.nativeElement.getBoundingClientRect();
+    this.updateMaxThumbPosition();
   }
 
   @HostListener('mousedown', ['$event'])
@@ -85,6 +90,7 @@ export class SliderComponent implements ControlValueAccessor, AfterViewInit {
     this.startDragging(event);
     this.registerMouseMoveListener();
     this.registerMouseUpListener();
+    this.mouseDown.emit(this.value);
   }
 
   private startDragging(event: MouseEvent): void {
