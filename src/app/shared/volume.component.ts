@@ -57,6 +57,7 @@ export class VolumeComponent implements ControlValueAccessor, AfterViewInit {
   @Input() max: number = 100;
   @Input() step: number = 1;
   @Output() mouseMove = new EventEmitter<number>();
+  @Output()mouseDown = new EventEmitter<number>();
 
   private isDragging = false;
   private containerRect!: DOMRect;
@@ -87,6 +88,7 @@ export class VolumeComponent implements ControlValueAccessor, AfterViewInit {
     this.startDragging(event);
     this.registerMouseMoveListener();
     this.registerMouseUpListener();
+    this.mouseDown.emit(this.value)
   }
 
   private startDragging(event: MouseEvent): void {
