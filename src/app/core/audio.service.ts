@@ -51,7 +51,7 @@ export class AudioService{
   }
 
   getState(): Observable<AudioState> {
-    return this.#stateManager.state$;
+    return this.#stateManager.state$.pipe(takeUntil(this.#stop$));
   }
 
   private streamObservable(url: string): Observable<Event> {
@@ -92,7 +92,7 @@ export class AudioService{
       obj.addEventListener(event, handler);
     });
   }
-  
+
   private removeEvents(
     obj: HTMLAudioElement,
     events: string[],
