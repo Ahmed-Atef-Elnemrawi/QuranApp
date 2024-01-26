@@ -33,6 +33,10 @@ h5,
 h6 {
   font-family: "NotoSerif";
 }
+
+::-webkit-scrollbar{
+  display: none;
+}
 }
 
 @font-face {
