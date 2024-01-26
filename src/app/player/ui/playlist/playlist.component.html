@@ -1,0 +1,112 @@
+<div
+  id="container"
+  class="bg-container h-[70dvh] w-[85dvw] md:w-[70dvw] lg:w-[40dvw] shadow-lg rounded-sm relative"
+>
+  <!-- close button -->
+  <button
+    class="w-fit h-fit relative left-1.5 top-1.5"
+    (click)="onClosePlaylist()"
+  >
+    <svg
+      class="stroke-text"
+      width="24px"
+      height="24px"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g id="Menu / Close_SM">
+        <path
+          id="Vector"
+          d="M16 16L12 12M12 12L8 8M12 12L16 8M12 12L8 16"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </g>
+    </svg>
+  </button>
+
+  <div
+    class="w-full h-[50dvh] px-2 md:px-5 overflow-scroll scroll-smooth space-y-2 absolute top-1/2 -translate-y-1/2"
+  >
+    @for (item of playlist; track $index) {
+    <div
+      class="w-full h-fit flex place-content-between py-1.5 px-4 bg-white/5 dark:bg-black/5 rounded-sm"
+    >
+      <button class="capitalize">{{ item.name }}</button>
+      <button
+        id="del-playlist"
+        class="w-fit h-fit"
+        (click)="onDeletePlaylist(item.name)"
+      >
+        <svg
+          class="fill-text hover:fill-accent"
+          height="20px"
+          width="20px"
+          version="1.1"
+          id="Layer_1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 0 512 512"
+          enable-background="new 0 0 512 512"
+          xml:space="preserve"
+        >
+          <path
+            d="M465.5,0H186.2c-25.7,0-46.5,20.9-46.5,46.5v279.3c0,25.7,20.9,46.5,46.5,46.5h279.3c25.7,0,46.5-20.9,46.5-46.5V46.5
+	C512,20.9,491.1,0,465.5,0z M442.2,209.5H209.5v-46.5h232.7V209.5z M93.1,325.8V139.6H46.5C20.9,139.6,0,160.5,0,186.2v279.3
+	C0,491.1,20.9,512,46.5,512h279.3c25.7,0,46.5-20.9,46.5-46.5v-46.5H186.2C134.8,418.9,93.1,377.2,93.1,325.8z"
+          />
+        </svg>
+      </button>
+    </div>
+    }
+  </div>
+  <div class="flex absolute bottom-2.5 right-3 space-x-4">
+    <button
+      class="px-3 py-1 bg-primary hover:bg-secondary rounded-sm"
+      (click)="toggleAddForm()"
+    >
+      Add
+    </button>
+
+    <button
+      class="px-3 py-1 bg-primary hover:bg-secondary rounded-sm"
+      (click)="onClear()"
+    >
+      Clear
+    </button>
+  </div>
+  <!-- add playlist form -->
+  <div
+    class="w-full h-[50dvh] px-2 md:px-5 absolute top-1/2 -translate-y-1/2 z-50"
+    *ngIf="isAddFromActive()"
+  >
+    <div
+      class="w-3/4 h-fit flex flex-col space-y-4 place-content-between place-items-center absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 py-8 px-3 bg-container shadow-2xl rounded-sm"
+    >
+      <input
+        type="text"
+        class="appearance-none border-none outline-none ring-2 focus:ring-offset-2 ring-primary block bg-background p-1 rounded-sm"
+        [(ngModel)]="playlistName"
+      />
+      <div
+        id="btn-group"
+        class="w-full h-fit place-content-end place-items-end flex space-x-2"
+      >
+        <button
+          class="py-1 px-2 bg-primary hover:bg-accent rounded-sm"
+          (click)="onAddPlaylist()"
+          (keyup)="onAddPlaylist()"
+        >
+          add
+        </button>
+        <button
+          class="p-1 bg-primary hover:bg-accent rounded-sm"
+          (click)="toggleAddForm()"
+        >
+          cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

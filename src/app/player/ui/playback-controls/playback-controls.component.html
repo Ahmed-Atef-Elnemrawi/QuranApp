@@ -1,0 +1,198 @@
+<div
+  class="flex h-fit w-dvw place-content-around place-items-center max-sm:py-4"
+>
+  <div
+    class="relative h-fit flex w-fit gap-3.5 place-content-center place-items-center"
+  >
+    <!-- play/pause button -->
+    @if (isPlaying) {
+    <!-- pause button -->
+    <button id="pause-btn" (click)="onPause($event)" class="h-fit w-fit">
+      <svg
+        class="fill-text w-4 h-4 sm:h-5 sm:w-5"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g
+          id="SVGRepo_tracerCarrier"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></g>
+        <g id="SVGRepo_iconCarrier">
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M5.948 1.25H6.052C6.95048 1.24997 7.6997 1.24995 8.29448 1.32991C8.92228 1.41432 9.48908 1.59999 9.94455 2.05546C10.4 2.51093 10.5857 3.07773 10.6701 3.70552C10.7501 4.30031 10.75 5.04953 10.75 5.94801V18.052C10.75 18.9505 10.7501 19.6997 10.6701 20.2945C10.5857 20.9223 10.4 21.4891 9.94455 21.9445C9.48908 22.4 8.92228 22.5857 8.29448 22.6701C7.6997 22.7501 6.95048 22.75 6.052 22.75H5.94801C5.04953 22.75 4.30031 22.7501 3.70552 22.6701C3.07773 22.5857 2.51093 22.4 2.05546 21.9445C1.59999 21.4891 1.41432 20.9223 1.32991 20.2945C1.24995 19.6997 1.24997 18.9505 1.25 18.052V5.948C1.24997 5.04952 1.24995 4.3003 1.32991 3.70552C1.41432 3.07773 1.59999 2.51093 2.05546 2.05546C2.51093 1.59999 3.07773 1.41432 3.70552 1.32991C4.3003 1.24995 5.04952 1.24997 5.948 1.25ZM3.90539 2.81654C3.44393 2.87858 3.24644 2.9858 3.11612 3.11612C2.9858 3.24644 2.87858 3.44393 2.81654 3.90539C2.7516 4.38843 2.75 5.03599 2.75 6V18C2.75 18.964 2.7516 19.6116 2.81654 20.0946C2.87858 20.5561 2.9858 20.7536 3.11612 20.8839C3.24644 21.0142 3.44393 21.1214 3.90539 21.1835C4.38843 21.2484 5.03599 21.25 6 21.25C6.96401 21.25 7.61157 21.2484 8.09461 21.1835C8.55607 21.1214 8.75357 21.0142 8.88389 20.8839C9.0142 20.7536 9.12143 20.5561 9.18347 20.0946C9.24841 19.6116 9.25 18.964 9.25 18V6C9.25 5.03599 9.24841 4.38843 9.18347 3.90539C9.12143 3.44393 9.0142 3.24644 8.88389 3.11612C8.75357 2.9858 8.55607 2.87858 8.09461 2.81654C7.61157 2.7516 6.96401 2.75 6 2.75C5.03599 2.75 4.38843 2.7516 3.90539 2.81654ZM17.948 1.25H18.052C18.9505 1.24997 19.6997 1.24995 20.2945 1.32991C20.9223 1.41432 21.4891 1.59999 21.9445 2.05546C22.4 2.51093 22.5857 3.07773 22.6701 3.70552C22.7501 4.30031 22.75 5.04953 22.75 5.94801V18.052C22.75 18.9505 22.7501 19.6997 22.6701 20.2945C22.5857 20.9223 22.4 21.4891 21.9445 21.9445C21.4891 22.4 20.9223 22.5857 20.2945 22.6701C19.6997 22.7501 18.9505 22.75 18.052 22.75H17.948C17.0495 22.75 16.3003 22.7501 15.7055 22.6701C15.0777 22.5857 14.5109 22.4 14.0555 21.9445C13.6 21.4891 13.4143 20.9223 13.3299 20.2945C13.2499 19.6997 13.25 18.9505 13.25 18.052V5.94801C13.25 5.04953 13.2499 4.30031 13.3299 3.70552C13.4143 3.07773 13.6 2.51093 14.0555 2.05546C14.5109 1.59999 15.0777 1.41432 15.7055 1.32991C16.3003 1.24995 17.0495 1.24997 17.948 1.25ZM15.9054 2.81654C15.4439 2.87858 15.2464 2.9858 15.1161 3.11612C14.9858 3.24644 14.8786 3.44393 14.8165 3.90539C14.7516 4.38843 14.75 5.03599 14.75 6V18C14.75 18.964 14.7516 19.6116 14.8165 20.0946C14.8786 20.5561 14.9858 20.7536 15.1161 20.8839C15.2464 21.0142 15.4439 21.1214 15.9054 21.1835C16.3884 21.2484 17.036 21.25 18 21.25C18.964 21.25 19.6116 21.2484 20.0946 21.1835C20.5561 21.1214 20.7536 21.0142 20.8839 20.8839C21.0142 20.7536 21.1214 20.5561 21.1835 20.0946C21.2484 19.6116 21.25 18.964 21.25 18V6C21.25 5.03599 21.2484 4.38843 21.1835 3.90539C21.1214 3.44393 21.0142 3.24644 20.8839 3.11612C20.7536 2.9858 20.5561 2.87858 20.0946 2.81654C19.6116 2.7516 18.964 2.75 18 2.75C17.036 2.75 16.3884 2.7516 15.9054 2.81654Z"
+          ></path>
+        </g>
+      </svg>
+    </button>
+    }@else{
+    <!-- play button -->
+    <button id="play-btn" (click)="onPlay($event)" class="h-fit w-fit">
+      <svg
+        class="fill-text w-4 h-4 sm:h-5 sm:w-5"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        stroke-width="0.00024000000000000003"
+      >
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g
+          id="SVGRepo_tracerCarrier"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="0.144"
+        ></g>
+        <g id="SVGRepo_iconCarrier">
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M7.23832 3.04445C5.65196 2.1818 3.75 3.31957 3.75 5.03299L3.75 18.9672C3.75 20.6806 5.65196 21.8184 7.23832 20.9557L20.0503 13.9886C21.6499 13.1188 21.6499 10.8814 20.0503 10.0116L7.23832 3.04445ZM2.25 5.03299C2.25 2.12798 5.41674 0.346438 7.95491 1.72669L20.7669 8.6938C23.411 10.1317 23.411 13.8685 20.7669 15.3064L7.95491 22.2735C5.41674 23.6537 2.25 21.8722 2.25 18.9672L2.25 5.03299Z "
+          ></path>
+        </g>
+      </svg>
+    </button>
+    }
+
+    <!-- current time -->
+    <span id="current-time" class="text-sm/snug font-medium">
+      {{ formattedCurrentTime }}
+    </span>
+
+    <!-- player slider -->
+    <range-input
+      [(ngModel)]="rangeValue"
+      [max]="maxRangeValue"
+      [step]="1"
+      (mouseMove)="onSeek($event)"
+      (mouseDown)="onSeek($event)"
+      width="45dvw"
+    />
+
+    <!-- duration time -->
+    <span id="duration" class="text-sm/snug font-medium">
+      {{ formattedDuration }}
+    </span>
+
+    <!-- volume control -->
+    <div class="relative w-fit h-fit bottom-1/2 translate-y-1/2">
+      <volume-input
+        *ngIf="isVolumeControllerActive()"
+        [(ngModel)]="volumeValue"
+        (ngModelChange)="onVolume($event)"
+        (mouseMove)="onVolume($event)"
+        (mouseDown)="onVolume($event)"
+        (mouseleave)="toggleVolumeController($event)"
+        id="volume-control"
+        class="shadow-sm absolute -translate-x-1/2 left-1/2 bottom-10"
+        [max]="100"
+        [step]="5"
+      />
+
+      <!-- volume button with mute/unmute functionality -->
+      @if(volumeValue > 0){
+      <!-- volume on -->
+      <button
+        id="volume-btn"
+        (click)="toggleVolumeController($event)"
+        class="size-fit -translate-y-1/2"
+      >
+        <svg
+          class="fill-text w-4 h-4 sm:h-5 sm:w-5"
+          viewBox="0 0 1920 1920"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1129.432 113v1694.148H936.638l-451.773-451.773h-315.45C76.01 1355.375 0 1279.365 0 1185.96V734.187c0-93.404 76.01-169.414 169.415-169.414h315.45L936.638 113h192.794Zm-112.943 112.943h-33.093l-418.68 418.68v630.901l418.68 418.68h33.093V225.944Zm655.488 135.114C1831.904 521.097 1920 733.77 1920 960.107c0 226.226-88.096 438.898-248.023 598.938l-79.851-79.85c138.694-138.695 214.93-323.018 214.93-519.087 0-196.183-76.236-380.506-214.93-519.2Zm-239.112 239.745c95.663 97.018 148.294 224.644 148.294 359.272s-52.631 262.254-148.294 359.272l-80.529-79.286c74.769-75.785 115.88-175.175 115.88-279.986 0-104.811-41.111-204.201-115.88-279.986Zm-981.092 76.914H169.415c-31.06 0-56.472 25.3-56.472 56.471v451.773c0 31.172 25.412 56.472 56.472 56.472h282.358V677.716Z"
+            fill-rule="evenodd"
+          />
+        </svg>
+      </button>
+      }@else {
+      <!-- volume off -->
+      <button
+        id="mute-btn"
+        (click)="toggleVolumeController($event)"
+        class="size-fit -translate-y-1/2"
+      >
+        <svg
+          class="fill-text w-4 h-4 sm:h-5 sm:w-5"
+          viewBox="0 0 1920 1920"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1129.432 113v1694.148H936.638l-451.773-451.773h-315.45c-92.47 0-167.893-74.498-169.392-166.618L0 1185.96V734.187c0-92.47 74.498-167.892 166.618-169.392l2.797-.022h315.45L936.638 113h192.794Zm-112.943 112.943h-33.093l-418.68 418.68v630.901l418.68 418.68h33.093V225.944Zm823.662 411.78L1920 717.571l-242.372 242.372L1920 1202.428l-79.85 79.85-242.484-242.372-242.372 242.372-79.85-79.85 242.372-242.484-242.371-242.372 79.85-79.85 242.37 242.372 242.486-242.372ZM451.773 677.715H169.415c-30.749 0-55.963 24.796-56.464 55.538l-.008.933v451.773c0 30.86 24.907 55.965 55.542 56.464l.93.008h282.358V677.716Z"
+            fill-rule="evenodd"
+          />
+        </svg>
+      </button>
+      }
+    </div>
+    <!-- playlist button -->
+    <button id="playlist-btn" class="w-fit h-fit" (click)="togglePlayList()"
+        (click)="onLoadPlaylist($event)">
+      <svg
+        class="fill-text w-4 h-4 sm:h-5 sm:w-5"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8,7,2,11V3ZM3,14.5H21a1,1,0,0,0,0-2H3a1,1,0,0,0,0,2ZM10,7a1,1,0,0,0,1,1H21a1,1,0,0,0,0-2H11A1,1,0,0,0,10,7ZM3,21H21a1,1,0,0,0,0-2H3a1,1,0,0,0,0,2Z"
+        />
+      </svg>
+    </button>
+    <!-- playlist -->
+    <playlist
+      class="backdrop-blur drop-shadow-sm rounded-sm fixed top-0 left-0 right-0 bottom-0"
+      *ngIf="isPlaylistActive()"
+      [playlist]="playlist"
+      (close)="togglePlayList()"
+      (clear)="onClearPlaylists()"
+      (add)="onAddPlaylist($event)"
+      (delete)="onDeletePlaylist($event)"
+    />
+  </div>
+
+  <!-- info section for medium screen only -->
+    <div
+      (click)="toggleTrackNavigationControls($event)"
+      class="place-content-around place-items-center gap-x-5 cursor-pointer flex lg:hidden"
+    >
+      <!-- music button -->
+      <button id="toggled-music-btn" class="w-fit h-fit">
+        <svg
+          class="fill-text w-4 h-4 sm:h-5 sm:w-5"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M22,3a1,1,0,0,0-1-1H9A1,1,0,0,0,8,3V14.556A3.959,3.959,0,0,0,6,14a4,4,0,1,0,4,4V8H20v6.556A3.959,3.959,0,0,0,18,14a4,4,0,1,0,4,4ZM6,20a2,2,0,1,1,2-2A2,2,0,0,1,6,20ZM10,6V4H20V6Zm8,14a2,2,0,1,1,2-2A2,2,0,0,1,18,20Z"
+          />
+        </svg>
+      </button>
+      <div class="hidden md:block">
+        <!-- sura name -->
+        <p class="text-sm font-medium">sura al-hadid</p>
+        <!-- reciter name -->
+        <p  class="text-sm font-medium">saad el-Ghamdi</p>
+      </div>
+    </div>
+
+  @if(hostWidth() < 1024){
+  <!-- for medium screen -->
+  <track-navigation
+    id="more-controllers"
+    reciterName="saad el-Ghamdi"
+    suraName="sura el-hadid"
+    *ngIf="isTrackNavigationActive()"
+    (mouseleave)="toggleTrackNavigationControls($event)"
+    (next)="onNext()"
+    (previous)="onPrevious()"
+    class="absolute -top-2 -translate-y-full right-1.5 bg-container p-5 rounded-sm shadow-md"
+  />
+  }@else{
+  <!-- for large screen -->
+  <track-navigation reciterName="saad el-Ghamdi" suraName="sura el-hadid" (next)="onNext()" (previous)="onPrevious()" />
+  }
+</div>

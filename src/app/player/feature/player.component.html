@@ -1,0 +1,42 @@
+  <sm-playback-controls
+    *ngIf="isMobile && deviceWidth() < 700"
+    [isPlaying]="isPlaying()"
+    [setRangeValue]="currentTime()"
+    [maxRangeValue]="duration()"
+    [playlist]="playlists()"
+    (play)="onPlay()"
+    (pause)="onPause()"
+    (seek)="onSeek($event)"
+    (stop)="onStop()"
+    (next)="onNext()"
+    (previous)="onPrevious()"
+    (loadPlaylist)="loadPlaylist()"
+    (addPlaylist)="addPlaylist($event)"
+    (clearPlaylists)="clearPlaylists()"
+    (deletePlaylist)="deletePlaylist($event)"
+  />
+  <playback-controls
+    *ngIf="
+      isTablet ||
+      isDesktop ||
+      (isMobile && deviceWidth() > 700)
+    "
+    [isPlaying]="isPlaying()"
+    [setRangeValue]="currentTime()"
+    [maxRangeValue]="duration()"
+    [formattedCurrentTime]="formattedCurrentTime()"
+    [formattedDuration]="formattedDuration()"
+    [playlist]="playlists()"
+    (play)="onPlay()"
+    (pause)="onPause()"
+    (stop)="onStop()"
+    (seek)="onSeek($event)"
+    (volume)="onVolume($event)"
+    (next)="onNext()"
+    (previous)="onPrevious()"
+    (loadPlaylist)="loadPlaylist()"
+    (addPlaylist)="addPlaylist($event)"
+    (clearPlaylists)="clearPlaylists()"
+    (deletePlaylist)="deletePlaylist($event)"
+  />
+
