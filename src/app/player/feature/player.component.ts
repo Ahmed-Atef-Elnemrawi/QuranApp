@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { PlaylistService } from '../../core/playlist.service';
+
 import { Playlist } from '../../core/model/playlist';
 import { PlaybackControlsComponent } from '../ui/playback-controls/playback-controls.component';
 import { SmallPlaybackControlsComponent } from '../ui/sm-playback-controls/playback-controls.component';
