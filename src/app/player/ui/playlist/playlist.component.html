@@ -33,7 +33,14 @@
     <div
       class="w-full h-fit flex place-content-between py-1.5 px-4 bg-white/5 dark:bg-black/5 rounded-sm"
     >
-      <button class="capitalize">{{ item.name }}</button>
+      <button
+        class="capitalize"
+        [routerLink]="['/playlist']"
+        [queryParams]="{ name: item.name }"
+        (click)="onClosePlaylist()"
+      >
+        {{ item.name }}
+      </button>
       <button
         id="del-playlist"
         class="w-fit h-fit"
