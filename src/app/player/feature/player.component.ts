@@ -9,9 +9,9 @@ import {
 } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { PlaylistService } from '../../core/playlist.service';
-import { AudioState } from '../../core/audio-state-manager';
+import { AudioState } from '../../core/audio-state.service';
 import { Playlist } from '../../core/model/playlist';
-import { AudioService } from '../../core/audio.service';
+import { AudioStreamService } from '../../core/audio-stream.service';
 import { PlaybackControlsComponent } from '../ui/playback-controls/playback-controls.component';
 import { SmallPlaybackControlsComponent } from '../ui/sm-playback-controls/playback-controls.component';
 
@@ -36,7 +36,7 @@ function fn<T>(value: T) {
   `,
 })
 export class PlayerComponent implements OnDestroy {
-  #audioService = inject(AudioService);
+  #audioService = inject(AudioStreamService);
   #playListService = inject(PlaylistService);
   #deviceDetector = inject(DeviceDetectorService);
 
