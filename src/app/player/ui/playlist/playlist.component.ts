@@ -9,10 +9,11 @@ import {
 } from '@angular/core';
 import { Playlist } from '../../../core/model/playlist';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'playlist',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './playlist.component.html',
   styles: `
