@@ -1,12 +1,12 @@
 import { Injectable, Renderer2, inject } from '@angular/core';
 import { EMPTY, Observable, Subject, catchError, takeUntil } from 'rxjs';
-import { AudioState, AudioStateManager } from './audio-state.service';
+import { AudioState, AudioStateService } from './audio-state.service';
 //inject audioStatManager for more maintainability and testability
 @Injectable({
   providedIn: 'root',
 })
 export class AudioStreamService {
-  #stateManager = inject(AudioStateManager);
+  #stateManager = inject(AudioStateService);
   #audio = new Audio();
   #stop$ = new Subject<void>();
   #audioEvents = [

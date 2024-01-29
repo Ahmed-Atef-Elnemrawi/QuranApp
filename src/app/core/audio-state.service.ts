@@ -1,4 +1,3 @@
-
 import { BehaviorSubject, Observable } from 'rxjs';
 import moment from 'moment';
 import { Injectable } from '@angular/core';
@@ -10,14 +9,14 @@ export interface AudioState {
   duration: number | undefined;
   currentTime: number | undefined;
   canplay: boolean;
-  ended:boolean;
+  ended: boolean;
   error: boolean;
 }
 
 @Injectable({
-  providedIn:'root'
+  providedIn: 'root',
 })
-export class AudioStateManager {
+export class AudioStateService {
   #state: AudioState = this.initializeState();
   #stateChange = new BehaviorSubject(this.#state);
   #audio: HTMLAudioElement | undefined;
@@ -28,13 +27,13 @@ export class AudioStateManager {
     playing: (event: Event) => this.handlePlayingState(event),
     pause: (event: Event) => this.handlePauseState(event),
     timeupdate: (event: Event) => this.handleTimeUpdatedState(event),
-    ended:(event: Event) => this.handleEndedState(event),
+    ended: (event: Event) => this.handleEndedState(event),
     error: (event: Event) => this.handleErrorState(event),
   };
 
-  trackState(audio: HTMLAudioElement): this{
-    this.#audio = audio
-    return this
+  trackState(audio: HTMLAudioElement): this {
+    this.#audio = audio;
+    return this;
   }
 
   get state$(): Observable<AudioState> {
@@ -68,14 +67,16 @@ export class AudioStateManager {
 
   private handleTimeUpdatedState(event: Event): void {
     this.#state.currentTime = this.getAudioCurrentTime();
-    this.#state.formattedCurrentTime = this.formatTime(this.#state.currentTime!);
+    this.#state.formattedCurrentTime = this.formatTime(
+      this.#state.currentTime!
+    );
   }
 
-  private handleEndedState(event: Event):void{
+  private handleEndedState(event: Event): void {
     this.#state.playing = false;
     this.#state.canplay = true;
     this.#state.currentTime = 0;
-    this.#state.formattedCurrentTime = '00:00'
+    this.#state.formattedCurrentTime = '00:00';
     this.#state.ended = true;
   }
 
