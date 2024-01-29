@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Logger } from './Logger';
+import { Logger } from './model/Logger';
 
-type LevelStyle = [color:string, background:string];
+type LevelStyle = [color: string, background: string];
 
 const FONT_SIZE = 1.4;
 
@@ -46,7 +46,6 @@ const LEVELS: Record<string, number> = {
 
 @Injectable()
 export class LoggingService implements Logger {
-
   trace(message: string, data?: any) {
     this.log('trace', message, data);
   }
@@ -122,20 +121,20 @@ export class LoggingService implements Logger {
 
     switch (level) {
       case 'error':
-        style = ['white','red' ];
+        style = ['white', 'red'];
         break;
       case 'warn':
-        style = ['black', 'yellow'] ;
+        style = ['black', 'yellow'];
         break;
       case 'debug':
-        style =  ['white', 'blue'] ;
+        style = ['white', 'blue'];
         break;
       case 'info':
-        style = ['white', 'green'] ;
+        style = ['white', 'green'];
         break;
 
       default:
-        style = ['white', 'grey'] ;
+        style = ['white', 'grey'];
     }
     return style;
   }

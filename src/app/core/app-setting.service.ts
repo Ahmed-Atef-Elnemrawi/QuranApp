@@ -1,9 +1,9 @@
 import { Injectable, inject, signal } from "@angular/core";
-import { AppSetting } from "./app-setting";
 import { toObservable } from "@angular/core/rxjs-interop";
 import { BACKEND_URL } from ".";
 import { Language } from "./model/language";
 import { LocalStorageService } from "./storage.service";
+import { AppSetting } from "./model/app-setting";
 
 @Injectable()
 export class AppSettingService implements AppSetting{

@@ -1,13 +1,13 @@
 import { Injectable, Renderer2, inject } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { AudioState, AudioStateManager } from './audio-state-manager';
-
+import { EMPTY, Observable, Subject, catchError, takeUntil } from 'rxjs';
+import { AudioState, AudioStateManager } from './audio-state.service';
+//inject audioStatManager for more maintainability and testability
 @Injectable({
-  providedIn:'root'
+  providedIn: 'root',
 })
-export class AudioService{
+export class AudioStreamService {
+  #stateManager = inject(AudioStateManager);
   #audio = new Audio();
-  #stateManager = new AudioStateManager(this.#audio);
   #stop$ = new Subject<void>();
   #audioEvents = [
     'ended',
@@ -21,10 +21,16 @@ export class AudioService{
     'loadstart',
   ];
 
-  playStream(url: string): Observable<Event> {
-    return this.streamObservable(url).pipe(takeUntil(this.#stop$));
+  constructor() {
+    this.#stateManager.trackState(this.#audio);
   }
 
+  playStream(url: string): Observable<Event> {
+    return this.streamObservable(url).pipe(
+      takeUntil(this.#stop$),
+      catchError((e) => EMPTY)
+    );
+  }
 
   play(): void {
     this.#audio.play();
@@ -66,20 +72,26 @@ export class AudioService{
 
       return () => {
         this.cleanupAudioEl();
-        this.removeEvents(this.#audio,this.#audioEvents, eventHandler)
+        this.removeEvents(this.#audio, this.#audioEvents, eventHandler);
       };
     });
   }
 
   private setupAudioEl(url: string): void {
     this.#audio.src = url;
+    this.#audio.preload = 'metadata';
+
+    this.#audio.oncanplay = (e) => {
+      this.#audio.play();
+    };
+
     this.#audio.load();
-    this.#audio.play();
   }
 
   private cleanupAudioEl(): void {
     this.#audio.pause();
     this.#audio.currentTime = 0;
+    this.#audio.src = '';
     this.#stateManager.resetState();
   }
 
