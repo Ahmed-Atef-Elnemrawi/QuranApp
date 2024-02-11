@@ -9,13 +9,8 @@ import { HttpClient } from '@angular/common/http';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { BACKEND_URL } from '../../core';
+import { Language } from '../../core/model/language';
 
-export interface Language {
-  language: string;
-  native: string;
-  reciters: string;
-  radios: string;
-}
 
 @Injectable()
 export class DataService {

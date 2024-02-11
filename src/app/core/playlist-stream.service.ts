@@ -1,6 +1,14 @@
 import { Injectable, OnDestroy, inject } from '@angular/core';
 import { Track } from './model/track';
-import { Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  EMPTY,
+  Observable,
+  Subject,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { AudioStreamService } from './audio-stream.service';
 
 @Injectable({
@@ -9,25 +17,29 @@ import { AudioStreamService } from './audio-stream.service';
 export class PlaylistStreamService implements OnDestroy {
   #audio = inject(AudioStreamService);
   #cursor: number = 0;
-  #currentTrack$ = new Subject<Track>();
   #stop$ = new Subject<void>();
   #tracks: Track[] = [];
   #current: Track | undefined;
+  #currentTrack$ = new BehaviorSubject<Track | null>(null);
 
-  get currentTrack(): Track | undefined {
-    return this.#current;
+  get getCurrentTrack(): Observable<Track |null> {
+    return this.#currentTrack$.asObservable();
   }
 
-  startPlaylistStream$(): Observable<Event> {
+  startPlaylistStream$() {
     return this.#currentTrack$.pipe(
       switchMap((track) => {
-        return this.#audio.playStream(track.src).pipe(
-          tap((event) => {
-            if (event.type === 'ended') {
-              this.nextTrack();
-            }
-          })
-        );
+        if (track) {
+          return this.#audio.playStream(track.src).pipe(
+            tap((event) => {
+              if (event.type === 'ended') {
+                this.nextTrack();
+              }
+            })
+          );
+        } else {
+          return EMPTY;
+        }
       }),
       takeUntil(this.#stop$)
     );
@@ -92,6 +104,10 @@ export class PlaylistStreamService implements OnDestroy {
       (this.#cursor - 1 + this.#tracks.length) % this.#tracks.length;
     this.#current = this.#tracks[this.#cursor];
     this.#currentTrack$.next(this.#current);
+  }
+
+  pausePlaylistStream(){
+    this.#audio.pause();
   }
 
   stopPlaylistStream() {

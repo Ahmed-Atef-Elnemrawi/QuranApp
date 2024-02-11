@@ -15,8 +15,8 @@ import { PlayerComponent } from '../player/feature/player.component';
   `,
   styles: `
   :host{
-    z-index:50;
+    z-index:40;
   }
 `,
 })
-export class AppFooterComponent {}
+export class AppFooterComponent { }

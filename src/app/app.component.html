@@ -1,9 +1,14 @@
 <div
-  class="h-dvh w-dvw bg-background text-text dark:text-text relative overflow-y-scroll scroll-smooth flex flex-col"
+  class="h-dvh w-dvw bg-background text-text dark:text-text relative scroll-smooth flex flex-col"
 >
-<app-header class="fixed top-0"></app-header>
-<main class="my-16 flex-grow overflow-scroll">
-  <router-outlet/>
-</main>
-<app-footer class="fixed bottom-0"></app-footer>
+  <app-header class="fixed top-0"></app-header>
+  <app-nav class="fixed z-30 top-16 mt-2 -translate-x-1/2 left-1/2"></app-nav>
+  <main
+    id="main-content"
+    class="fixed top-16 bottom-26 h-[calc(100dvh-128px)] flex-grow"
+  >
+    <router-outlet />
+    <app-notification />
+  </main>
+  <app-footer class="fixed bottom-0"></app-footer>
 </div>

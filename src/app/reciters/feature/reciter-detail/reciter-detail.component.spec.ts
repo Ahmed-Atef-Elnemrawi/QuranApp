@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+  import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReciterDetailComponent } from './reciter-detail.component';
 
@@ -11,7 +11,7 @@ describe('ReciterDetailComponent', () => {
       imports: [ReciterDetailComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(ReciterDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

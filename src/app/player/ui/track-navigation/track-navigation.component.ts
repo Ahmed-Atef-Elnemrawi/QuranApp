@@ -1,16 +1,23 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ClickAnimation } from '../../../shared/click-animation.directive';
 
 @Component({
   selector: 'track-navigation',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, ClickAnimation],
   template: `
     <div
       id="more-controllers"
       class="flex place-content-start place-items-center gap-x-5 lg:translate-y-0 rounded-none shadow-none"
     >
       <!-- previous button -->
-      <button id="previous-btn" class="w-fit h-fit" (click)="onPrevious($event)">
+      <button
+        animate-click
+        id="previous-btn"
+        class="w-fit h-fit"
+        (click)="onPrevious($event)"
+      >
         <svg
           class="fill-text w-4 h-4 sm:h-5 sm:w-5"
           viewBox="0 0 32 32"
@@ -50,13 +57,20 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
           />
         </svg>
       </button>
-
-      <div class="cursor-default">
+      <div
+        *ngIf="reciterName && suraName"
+        class="flex flex-col place-content-center place-items-center cursor-default"
+      >
         <p class="text-sm font-medium">{{ suraName }}</p>
         <p class="text-sm font-medium">{{ reciterName }}</p>
       </div>
 
-      <button id="next-btn" class="w-fit h-fit" (click)="onNext($event)">
+      <button
+        animate-click
+        id="next-btn"
+        class="w-fit h-fit"
+        (click)="onNext($event)"
+      >
         <svg
           class="fill-text w-4 h-4 sm:h-5 sm:w-5"
           viewBox="0 0 32 32"
@@ -88,21 +102,21 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styles: ``,
 })
 export class TrackNavigationComponent {
-  @Input() reciterName = '';
-  @Input() suraName = '';
+  @Input() reciterName: string | undefined;
+  @Input() suraName: string | undefined;
 
   @Output() next = new EventEmitter<void>();
   @Output() previous = new EventEmitter<void>();
 
-  onNext($event: Event){
+  onNext($event: Event) {
     $event.preventDefault();
     $event.stopPropagation();
     this.next.emit();
   }
 
-  onPrevious($event: Event){
+  onPrevious($event: Event) {
     $event.preventDefault();
     $event.stopPropagation();
-    this.previous.emit()
+    this.previous.emit();
   }
 }

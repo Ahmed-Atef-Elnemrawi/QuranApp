@@ -37,5 +37,5 @@ export interface Operations<T> {
    * Clears the object store.
    * @returns {Promise<void>} A promise that resolves when the store is cleared.
    */
-  clear:() => Promise<void>;
+  clear: () => Promise<void>;
 }

@@ -1,0 +1,20 @@
+<div class="w-dvw h-full flex flex-col gap-y-4">
+  @if (playlist$ | async; as playlist) {
+
+  <playlist-header
+    [playlist]="playlist"
+    (playPlaylist)="playPlaylist($event)"
+    (pausePlaylist)="pausePlaylist()"
+    (showEditingOptions)="activeEditingOptions()"
+  />
+
+  @if (playlist.tracks; as tracks) {
+  <suwar
+    [playlist]="playlist"
+    [activeEditingOptions]="isEditingOptionsActive()"
+    (play)="playPlaylist($event.tracks, $event.track)"
+    (pause)="pausePlaylist()"
+    (deleteTrack)="deleteTrack($event.playlist, $event.id)"
+  />
+  } }
+</div>

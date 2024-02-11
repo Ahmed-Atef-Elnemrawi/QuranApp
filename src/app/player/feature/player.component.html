@@ -3,7 +3,10 @@
     [isPlaying]="isPlaying()"
     [setRangeValue]="currentTime()"
     [maxRangeValue]="duration()"
-    [playlist]="playlists()"
+    [formattedCurrentTime]="formattedCurrentTime()"
+    [formattedDuration]="formattedDuration()"
+    [playlist]="(playlists$ | async)!"
+    [track]="currentTrack | async"
     (play)="onPlay()"
     (pause)="onPause()"
     (seek)="onSeek($event)"
@@ -14,6 +17,7 @@
     (addPlaylist)="addPlaylist($event)"
     (clearPlaylists)="clearPlaylists()"
     (deletePlaylist)="deletePlaylist($event)"
+    (renamePlaylist)="renamePlaylist($event.name, $event.newName)"
   />
   <playback-controls
     *ngIf="
@@ -26,7 +30,8 @@
     [maxRangeValue]="duration()"
     [formattedCurrentTime]="formattedCurrentTime()"
     [formattedDuration]="formattedDuration()"
-    [playlist]="playlists()"
+    [playlist]="(playlists$ |async)!"
+    [track]="currentTrack | async"
     (play)="onPlay()"
     (pause)="onPause()"
     (stop)="onStop()"
@@ -38,5 +43,6 @@
     (addPlaylist)="addPlaylist($event)"
     (clearPlaylists)="clearPlaylists()"
     (deletePlaylist)="deletePlaylist($event)"
+    (renamePlaylist)="renamePlaylist($event.name, $event.newName)"
   />
 

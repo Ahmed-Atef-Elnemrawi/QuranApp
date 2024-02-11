@@ -7,7 +7,12 @@
     <!-- play/pause button -->
     @if (isPlaying) {
     <!-- pause button -->
-    <button id="pause-btn" (click)="onPause($event)" class="h-fit w-fit">
+    <button
+      id="pause-btn"
+      animate-click
+      (click)="onPause($event)"
+      class="h-fit w-fit"
+    >
       <svg
         class="fill-text w-4 h-4 sm:h-5 sm:w-5"
         viewBox="0 0 24 24"
@@ -30,7 +35,12 @@
     </button>
     }@else{
     <!-- play button -->
-    <button id="play-btn" (click)="onPlay($event)" class="h-fit w-fit">
+    <button
+      id="play-btn"
+      animate-click
+      (click)="onPlay($event)"
+      class="h-fit w-fit"
+    >
       <svg
         class="fill-text w-4 h-4 sm:h-5 sm:w-5"
         viewBox="0 0 24 24"
@@ -130,8 +140,13 @@
       }
     </div>
     <!-- playlist button -->
-    <button id="playlist-btn" class="w-fit h-fit" (click)="togglePlayList()"
-        (click)="onLoadPlaylist($event)">
+    <button
+      animate-click
+      id="playlist-btn"
+      class="w-fit h-fit"
+      (click)="togglePlayList()"
+      (click)="onLoadPlaylist($event)"
+    >
       <svg
         class="fill-text w-4 h-4 sm:h-5 sm:w-5"
         viewBox="0 0 24 24"
@@ -151,48 +166,56 @@
       (clear)="onClearPlaylists()"
       (add)="onAddPlaylist($event)"
       (delete)="onDeletePlaylist($event)"
+      (rename)="onRenamePlaylist($event.name, $event.newName)"
     />
   </div>
 
   <!-- info section for medium screen only -->
+  <div
+    (click)="toggleTrackNavigationControls($event)"
+    class="place-content-around place-items-center gap-x-5 cursor-pointer flex lg:hidden"
+  >
+    <!-- music button -->
+    <button animate-click id="toggled-music-btn" class="w-fit h-fit">
+      <svg
+        class="fill-text w-4 h-4 sm:h-5 sm:w-5"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M22,3a1,1,0,0,0-1-1H9A1,1,0,0,0,8,3V14.556A3.959,3.959,0,0,0,6,14a4,4,0,1,0,4,4V8H20v6.556A3.959,3.959,0,0,0,18,14a4,4,0,1,0,4,4ZM6,20a2,2,0,1,1,2-2A2,2,0,0,1,6,20ZM10,6V4H20V6Zm8,14a2,2,0,1,1,2-2A2,2,0,0,1,18,20Z"
+        />
+      </svg>
+    </button>
     <div
-      (click)="toggleTrackNavigationControls($event)"
-      class="place-content-around place-items-center gap-x-5 cursor-pointer flex lg:hidden"
+      class="hidden md:flex md:flex-col md:place-content-center md:place-items-center"
     >
-      <!-- music button -->
-      <button id="toggled-music-btn" class="w-fit h-fit">
-        <svg
-          class="fill-text w-4 h-4 sm:h-5 sm:w-5"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M22,3a1,1,0,0,0-1-1H9A1,1,0,0,0,8,3V14.556A3.959,3.959,0,0,0,6,14a4,4,0,1,0,4,4V8H20v6.556A3.959,3.959,0,0,0,18,14a4,4,0,1,0,4,4ZM6,20a2,2,0,1,1,2-2A2,2,0,0,1,6,20ZM10,6V4H20V6Zm8,14a2,2,0,1,1,2-2A2,2,0,0,1,18,20Z"
-          />
-        </svg>
-      </button>
-      <div class="hidden md:block">
-        <!-- sura name -->
-        <p class="text-sm font-medium">sura al-hadid</p>
-        <!-- reciter name -->
-        <p  class="text-sm font-medium">saad el-Ghamdi</p>
-      </div>
+      <!-- sura name -->
+      <p class="text-sm font-medium">{{ track?.title }}</p>
+      <!-- reciter name -->
+      <p class="text-sm font-medium">{{ track?.artist }}</p>
     </div>
+  </div>
 
   @if(hostWidth() < 1024){
   <!-- for medium screen -->
   <track-navigation
     id="more-controllers"
-    reciterName="saad el-Ghamdi"
-    suraName="sura el-hadid"
+    [reciterName]="track?.artist"
+    [suraName]="track?.title"
     *ngIf="isTrackNavigationActive()"
     (mouseleave)="toggleTrackNavigationControls($event)"
     (next)="onNext()"
     (previous)="onPrevious()"
-    class="absolute -top-2 -translate-y-full right-1.5 bg-container p-5 rounded-sm shadow-md"
+    class="absolute -top-2 -translate-y-full right-1.5 bg-container p-5 rounded-sm shadow-md ring-1 ring-primary"
   />
   }@else{
   <!-- for large screen -->
-  <track-navigation reciterName="saad el-Ghamdi" suraName="sura el-hadid" (next)="onNext()" (previous)="onPrevious()" />
+  <track-navigation
+    [reciterName]="track?.artist"
+    [suraName]="track?.title"
+    (next)="onNext()"
+    (previous)="onPrevious()"
+  />
   }
 </div>

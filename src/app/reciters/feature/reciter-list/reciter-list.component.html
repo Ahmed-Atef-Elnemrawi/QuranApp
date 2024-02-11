@@ -1,3 +1,34 @@
-
-
-
+<div
+  class="w-dvw h-fit p-5 flex flex-col place-content-center place-items-start gap-5 overflow-y-scroll scroll-smooth snap-proximity snap-y snap-start"
+>
+  @if(reciters$ | async; as reciters){ @for (letter of alphabet; track $index) {
+  <p
+    class="size-10 text-center flex place-content-center place-items-center text-xl rounded-sm bg-secondary shadow-md"
+  >
+    {{ letter }}
+  </p>
+  <div
+    class="w-full h-fit space-y-4 p-4 flex flex-col bg-container sm:bg-transparent sm:flex-row sm:flex-wrap sm:space-y-0 sm:gap-5 text-lg sm:text-base snap-start"
+  >
+    @for (reciter of reciters; track $index) { @if (reciter.letter === letter) {
+    <button
+      animate-scale
+      [routerLink]="[reciter.id]"
+      id="reciter-btn"
+      class="inline-block px-3 py-2 bg-container hover:bg-primary sm:hover:shadow-lg rounded-sm sm:shadow-sm snap-start hover:ring-2 hover:ring-secondary"
+    >
+      {{ reciter.name }}
+    </button>
+    } }@empty {
+    <p
+      dir="ltr"
+      class="capitalize font-medium top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 fixed"
+    >
+      No reciters available at the moment.
+    </p>
+    }
+  </div>
+  }}@else {
+  <loader></loader>
+  }
+</div>

@@ -27,13 +27,13 @@ import { CommonModule } from '@angular/common';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="h-0.5 relative bg-accent rounded-sm my-1" #rangeContainer>
+    <div class="h-0.5 relative bg-accent rounded-sm my-1 group" #rangeContainer>
       <div
         class="bg- absolute top-0 left-0 h-0.5 bg-text"
         #skippedTracker
       ></div>
       <div
-        class="size-2.5 bg-text absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 rounded-sm shadow-lg"
+        class="size-2.5 bg-text absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 rounded-sm shadow-lg max-sm:hidden group-hover:block"
         #rangeThumb
       ></div>
     </div>
@@ -66,11 +66,11 @@ export class SliderComponent implements ControlValueAccessor, AfterViewInit {
   private maxThumbPosition!: number;
   private currentThumbPosition!: number;
 
-  private onChange: any = () => {};
-  private onTouch: any = () => {};
+  private onChange: any = () => { };
+  private onTouch: any = () => { };
   private value: number = 0;
 
-  constructor(private renderer: Renderer2, private el: ElementRef) {}
+  constructor(private renderer: Renderer2, private el: ElementRef) { }
 
   ngAfterViewInit(): void {
     this.setupInitialView();

@@ -8,15 +8,17 @@ import {
   Output,
   EventEmitter,
   HostListener,
+  signal,
 } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Subscription, fromEvent, debounceTime, tap } from 'rxjs';
 import { Utils } from '../../shared/dom.utils';
+import { SearchResult } from '../../core/app-search/app-search.component';
 
 @Component({
   selector: 'header-search',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, SearchResult],
   template: `
     <span
       id="search-btn"
@@ -52,13 +54,15 @@ import { Utils } from '../../shared/dom.utils';
     <div id="form-container" class="hidden sm:block z-50">
       <div id="search-form" class="w-fit  flex">
         <input
+          id="input"
+          readonly
           type="text"
           [(ngModel)]="query"
           class="w-[30dvw] bg-container appearance-none border-none outline-none p-1.5 order-2 rounded-tr-sm rounded-br-sm"
         />
 
         <span
-          class="bg-accent block w-fit h-fit m-auto p-1.5 rounded-tl-sm rounded-bl-sm order-1"
+          class="bg-primary block w-fit h-fit m-auto p-1.5 rounded-l-sm order-1"
         >
           <svg
             width="24px"
@@ -87,9 +91,9 @@ import { Utils } from '../../shared/dom.utils';
           </svg>
         </span>
 
-        <span
+        <!-- <span
           id="close-btn"
-          class="bg-accent block w-fit h-fit m-auto p-1.5 rounded-tl-sm rounded-bl-sm order-3 sm:hidden hover:bg-secondary"
+          class="bg-accent block w-fit h-fit m-auto p-1.5 rounded-r-sm order-3 sm:hidden hover:bg-secondary"
         >
           <svg
             width="24px"
@@ -119,9 +123,13 @@ import { Utils } from '../../shared/dom.utils';
               </g>
             </g>
           </svg>
-        </span>
+        </span> -->
       </div>
     </div>
+
+    <search-result
+      [isActive]="isSearchResultActive()"
+      (close)="closeSearchResult()"/>
   `,
   styles: `
     .form-container{
@@ -141,6 +149,7 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() queryChanged = new EventEmitter<string>();
 
   query = '';
+  isSearchResultActive = signal(false);
 
   @HostListener('window:resize', ['$event'])
   onResize($event: Event) {
@@ -158,21 +167,29 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     const searchBtn = this.#utils.queryById('search-btn');
     const container = this.#utils.queryById('form-container');
-    const closeBtn = this.#utils.queryById('close-btn');
+    const input = this.#utils.queryById('input')
+    // const closeBtn = this.#utils.queryById('close-btn');
 
-    this.#utils.listenTo(searchBtn!, 'click', () => {
-      this.#utils
-        .removeClass(container, 'hidden')
-        .addClass(searchBtn, 'hidden')
-        .addClass(container, 'form-container');
-    });
+    // this.#utils.listenTo(searchBtn!, 'click', () => {
+    //   this.#utils
+    //     .removeClass(container, 'hidden')
+    //     .addClass(searchBtn, 'hidden')
+    //     .addClass(container, 'form-container');
+    // });
 
-    this.#utils.listenTo(closeBtn!, 'click', () => {
-      this.#utils
-        .removeClass(container, 'form-container')
-        .addClass(container, 'hidden')
-        .removeClass(searchBtn, 'hidden');
-    });
+    // this.#utils.listenTo(closeBtn!, 'click', () => {
+    //   this.#utils
+    //     .removeClass(container, 'form-container')
+    //     .addClass(container, 'hidden')
+    //     .removeClass(searchBtn, 'hidden');
+    // });
+
+    this.#utils.listenTo(input!, 'click', () => {
+      this.isSearchResultActive.update(() => true)
+    })
+
+    this.#utils.listenTo(searchBtn!, 'click', () =>
+      this.isSearchResultActive.update(() => true))
   }
 
   ngOnInit(): void {
@@ -182,6 +199,10 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
         tap(() => this.queryChanged.emit(this.query))
       )
       .subscribe();
+  }
+
+  closeSearchResult() {
+    this.isSearchResultActive.update(() => false)
   }
 
   ngOnDestroy(): void {

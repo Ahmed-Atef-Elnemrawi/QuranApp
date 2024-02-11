@@ -1,1 +1,39 @@
-<p>reciter-detail works!</p>
+<div class="w-dvw h-full flex flex-col gap-y-4">
+  @if(tracks$ | async; as tracks;){ @if(reciter$ | async; as reciter){
+
+  <reciter-header
+    [isActiveMoshafMenu]="isActiveMoshafList()"
+    [reciter]="reciter"
+    [tracks]="tracks"
+    (playPlaylist)="playPlaylist($event.tracks, undefined, $event.name)"
+    (pausePlaylist)="pausePlaylist()"
+    (openMoshafMenu)="openMoshafMenu()"
+    (closeMoshafMenu)="closeMoshafMenu()"
+    (createPlayList)="createPlaylist($event.name, $event.tracks)"
+    (selectMoshaf)="switchToMoshaf($event.reciterId, $event.moshaf)"
+  />
+
+  } @if (tracks.length > 0) {
+  <suwar
+    [tracks]="tracks"
+    (activePlaylistMenu)="activePlaylistMenu($event)"
+    (play)="playPlaylist($event.tracks, $event.track)"
+    (pause)="pausePlaylist()"
+    (selectTrackToAddToPlaylist)="selectTrackToAddToPlaylist($event)"
+  />
+  }@else {
+  <loader></loader>
+
+  }
+
+  <playlist-menu
+    #menu
+    (mouseover)="openPlaylistMenu()"
+    (mouseout)="closePlaylistMenu()"
+    (addToPlaylist)="addToPlaylist($event)"
+    id="playlist-menu"
+    [playlists]="playlists"
+    class="hidden"
+  />
+  }
+</div>

@@ -1,0 +1,76 @@
+<div
+  class="min-h-fit max-h-full px-4 sm:px-6 lg:px-12 grid grid-cols-1 sm:grid-cols-2 overflow-y-scroll scroll-smooth snap-y snap-proximity gap-y-2 lg:gap-x-24"
+>
+  @for (track of playlist.tracks; track $index) {
+  <div
+    class="h-fit flex place-content-between py-5 sm:py-4 px-4 sm:px-8 hover:bg-primary hover:rounded-sm hover:shadow-sm surah snap-start"
+    animate-scale
+    *ngIf="track"
+  >
+    <span
+      class="bg-container size-6 flex place-items-center place-content-center rounded-sm"
+      >{{ $index + 1 }}</span
+    >
+
+    <span class="text-ellipsis hidden lg:block">{{ track.artist }}</span>
+    <div class="flex gap-x-4 tracking-wide">
+      <p>{{ track.id }}</p>
+      <p>{{ track.title }}</p>
+    </div>
+    <div class="flex gap-x-5 place-items-center place-content-center">
+      <button
+        id="play-btn"
+        (click)="onPlay(track, playlist.tracks)"
+        class="h-fit w-fit"
+        animate-click
+      >
+        <svg
+          class="fill-text w-4 h-4 sm:h-5 sm:w-5"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          stroke-width="0.00024000000000000003"
+        >
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="0.144"
+          ></g>
+          <g id="SVGRepo_iconCarrier">
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M7.23832 3.04445C5.65196 2.1818 3.75 3.31957 3.75 5.03299L3.75 18.9672C3.75 20.6806 5.65196 21.8184 7.23832 20.9557L20.0503 13.9886C21.6499 13.1188 21.6499 10.8814 20.0503 10.0116L7.23832 3.04445ZM2.25 5.03299C2.25 2.12798 5.41674 0.346438 7.95491 1.72669L20.7669 8.6938C23.411 10.1317 23.411 13.8685 20.7669 15.3064L7.95491 22.2735C5.41674 23.6537 2.25 21.8722 2.25 18.9672L2.25 5.03299Z "
+            ></path>
+          </g>
+        </svg>
+      </button>
+
+      <button
+        *ngIf="activeEditingOptions"
+        class="w-fit h-fit"
+        (click)="onDeleteTrack(playlist.name, track.id)"
+        animate-click
+      >
+        <svg
+          class="stroke-text fill-text w-4 h-4 sm:h-5 sm:w-5"
+          stroke-width="0.4"
+          viewBox="0 0 32.311 32.311"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g transform="translate(-96.951 -642.343)">
+            <path
+              d="M120.862,667.253a1,1,0,0,1-.707-.293l-15.511-15.51a1,1,0,0,1,1.414-1.414l15.511,15.51a1,1,0,0,1-.707,1.707Z"
+            />
+
+            <path
+              d="M105.351,667.253a1,1,0,0,1-.707-1.707l15.511-15.51a1,1,0,0,1,1.414,1.414l-15.511,15.51A1,1,0,0,1,105.351,667.253Z"
+            />
+          </g>
+        </svg>
+      </button>
+    </div>
+  </div>
+  }
+</div>

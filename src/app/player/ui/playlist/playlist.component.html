@@ -1,6 +1,6 @@
 <div
   id="container"
-  class="bg-container h-[70dvh] w-[85dvw] md:w-[70dvw] lg:w-[40dvw] shadow-lg rounded-sm relative"
+  class="bg-container h-[70dvh] w-[85dvw] md:w-[70dvw] lg:w-[40dvw] shadow-lg rounded-sm relative ring-1 ring-primary"
 >
   <!-- close button -->
   <button
@@ -27,57 +27,84 @@
   </button>
 
   <div
-    class="w-full h-[50dvh] px-2 md:px-5 overflow-scroll scroll-smooth space-y-2 absolute top-1/2 -translate-y-1/2"
+    class="w-full h-[50dvh] px-2 md:px-5 overflow-scroll scroll-smooth absolute top-1/2 -translate-y-1/2 space-y-0.5"
   >
     @for (item of playlist; track $index) {
     <div
-      class="w-full h-fit flex place-content-between py-1.5 px-4 bg-white/5 dark:bg-black/5 rounded-sm"
+      animate-scale
+      class="w-full h-fit flex place-content-between p-4 rounded-sm snap-start hover:bg-primary hover:shadow-sm"
     >
       <button
-        class="capitalize"
-        [routerLink]="['/playlist']"
-        [queryParams]="{ name: item.name }"
+        class="capitalize flex gap-x-4 text-ellipsis"
+        [routerLink]="['/playlists', item.name]"
         (click)="onClosePlaylist()"
       >
         {{ item.name }}
-      </button>
-      <button
-        id="del-playlist"
-        class="w-fit h-fit"
-        (click)="onDeletePlaylist(item.name)"
-      >
-        <svg
-          class="fill-text hover:fill-accent"
-          height="20px"
-          width="20px"
-          version="1.1"
-          id="Layer_1"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          viewBox="0 0 512 512"
-          enable-background="new 0 0 512 512"
-          xml:space="preserve"
+        <span
+          class="flex place-content-center place-items-center size-6 bg-background rounded-sm"
+          >{{ item.tracks.length }}</span
         >
-          <path
-            d="M465.5,0H186.2c-25.7,0-46.5,20.9-46.5,46.5v279.3c0,25.7,20.9,46.5,46.5,46.5h279.3c25.7,0,46.5-20.9,46.5-46.5V46.5
-	C512,20.9,491.1,0,465.5,0z M442.2,209.5H209.5v-46.5h232.7V209.5z M93.1,325.8V139.6H46.5C20.9,139.6,0,160.5,0,186.2v279.3
-	C0,491.1,20.9,512,46.5,512h279.3c25.7,0,46.5-20.9,46.5-46.5v-46.5H186.2C134.8,418.9,93.1,377.2,93.1,325.8z"
-          />
-        </svg>
       </button>
+      <div class="flex gap-x-5 place-content-center place-items-center">
+        <button
+          id="rename-playlist-btn"
+          class="w-fit h-fit"
+          (click)="toggleFormVisibility()"
+          (click)="showRenameForm()"
+          (click)="catchPlaylistName(item.name)"
+        >
+          <svg
+            class="stroke-text fill-text w-4 h-4 sm:h-5 sm:w-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              class="fill-background"
+              d="M19.0206 3.48162C17.0806 1.54162 15.1806 1.49162 13.1906 3.48162L11.9806 4.69162C11.8806 4.79162 11.8406 4.95162 11.8806 5.09162C12.6406 7.74162 14.7606 9.86162 17.4106 10.6216C17.4506 10.6316 17.4906 10.6416 17.5306 10.6416C17.6406 10.6416 17.7406 10.6016 17.8206 10.5216L19.0206 9.31162C20.0106 8.33162 20.4906 7.38162 20.4906 6.42162C20.5006 5.43162 20.0206 4.47162 19.0206 3.48162Z"
+            ></path>
+            <path
+              class="fill-background"
+              d="M15.6103 11.5308C15.3203 11.3908 15.0403 11.2508 14.7703 11.0908C14.5503 10.9608 14.3403 10.8208 14.1303 10.6708C13.9603 10.5608 13.7603 10.4008 13.5703 10.2408C13.5503 10.2308 13.4803 10.1708 13.4003 10.0908C13.0703 9.81078 12.7003 9.45078 12.3703 9.05078C12.3403 9.03078 12.2903 8.96078 12.2203 8.87078C12.1203 8.75078 11.9503 8.55078 11.8003 8.32078C11.6803 8.17078 11.5403 7.95078 11.4103 7.73078C11.2503 7.46078 11.1103 7.19078 10.9703 6.91078C10.9491 6.86539 10.9286 6.82022 10.9088 6.77532C10.7612 6.442 10.3265 6.34455 10.0688 6.60231L4.34032 12.3308C4.21032 12.4608 4.09032 12.7108 4.06032 12.8808L3.52032 16.7108C3.42032 17.3908 3.61032 18.0308 4.03032 18.4608C4.39032 18.8108 4.89032 19.0008 5.43032 19.0008C5.55032 19.0008 5.67032 18.9908 5.79032 18.9708L9.63032 18.4308C9.81032 18.4008 10.0603 18.2808 10.1803 18.1508L15.9016 12.4295C16.1612 12.1699 16.0633 11.7245 15.7257 11.5804C15.6877 11.5642 15.6492 11.5476 15.6103 11.5308Z"
+            ></path>
+          </svg>
+        </button>
+        <button
+          id="del-playlist"
+          class="w-fit h-fit"
+          (click)="onDeletePlaylist(item.name)"
+        >
+          <svg
+            class="stroke-text fill-text w-4 h-4 sm:h-5 sm:w-5"
+            stroke-width="0.4"
+            viewBox="0 0 32.311 32.311"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g transform="translate(-96.951 -642.343)">
+              <path
+                d="M120.862,667.253a1,1,0,0,1-.707-.293l-15.511-15.51a1,1,0,0,1,1.414-1.414l15.511,15.51a1,1,0,0,1-.707,1.707Z"
+              />
+              <path
+                d="M105.351,667.253a1,1,0,0,1-.707-1.707l15.511-15.51a1,1,0,0,1,1.414,1.414l-15.511,15.51A1,1,0,0,1,105.351,667.253Z"
+              />
+            </g>
+          </svg>
+        </button>
+      </div>
     </div>
     }
   </div>
   <div class="flex absolute bottom-2.5 right-3 space-x-4">
     <button
-      class="px-3 py-1 bg-primary hover:bg-secondary rounded-sm"
-      (click)="toggleAddForm()"
+      class="px-3 py-1 bg-primary hover:bg-secondary rounded-sm capitalize"
+      (click)="toggleFormVisibility()"
+      (click)="showAddForm()"
     >
       Add
     </button>
 
     <button
-      class="px-3 py-1 bg-primary hover:bg-secondary rounded-sm"
+      class="px-3 py-1 bg-primary hover:bg-secondary rounded-sm capitalize"
       (click)="onClear()"
     >
       Clear
@@ -86,30 +113,42 @@
   <!-- add playlist form -->
   <div
     class="w-full h-[50dvh] px-2 md:px-5 absolute top-1/2 -translate-y-1/2 z-50"
-    *ngIf="isAddFromActive()"
+    *ngIf="isFromActive()"
   >
     <div
-      class="w-3/4 h-fit flex flex-col space-y-4 place-content-between place-items-center absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 py-8 px-3 bg-container shadow-2xl rounded-sm"
+      class="w-3/4 h-fit flex flex-col space-y-4 place-content-between place-items-center absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 py-8 px-3 bg-container shadow-2xl rounded-sm ring-1 ring-primary ring-opacity-20"
     >
       <input
         type="text"
+        id="input"
         class="appearance-none border-none outline-none ring-2 focus:ring-offset-2 ring-primary block bg-background p-1 rounded-sm"
         [(ngModel)]="playlistName"
       />
       <div
         id="btn-group"
-        class="w-full h-fit place-content-end place-items-end flex space-x-2"
+        class="w-full h-fit place-content-end place-items-end flex space-x-2 capitalize"
       >
         <button
-          class="py-1 px-2 bg-primary hover:bg-accent rounded-sm"
+          *ngIf="isAddForm()"
+          id="add-btn"
+          class="py-1 px-2 bg-primary hover:bg-accent rounded-sm capitalize"
           (click)="onAddPlaylist()"
           (keyup)="onAddPlaylist()"
         >
           add
         </button>
+
         <button
-          class="p-1 bg-primary hover:bg-accent rounded-sm"
-          (click)="toggleAddForm()"
+          *ngIf="!isAddForm()"
+          id="add-btn"
+          class="py-1 px-2 bg-primary hover:bg-accent rounded-sm capitalize"
+          (click)="onRenamePlaylist()"
+        >
+          rename
+        </button>
+        <button
+          class="p-1 bg-primary hover:bg-accent rounded-sm capitalize"
+          (click)="toggleFormVisibility()"
         >
           cancel
         </button>

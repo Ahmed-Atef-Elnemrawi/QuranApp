@@ -26,11 +26,13 @@ export class AppSettingService implements AppSetting{
     this.currentLanguage.update((curr) => (curr = lang.language));
     this.#storage.setLanguage(lang.language);
     this.updateBackendUrlBasedOnLang(lang)
+    this.#storage.setItem('langObj', lang)
   };
 
 
   private updateBackendUrlBasedOnLang(lang: Language){
     this.#backendUrlService.updateRecitersUrl(lang.reciters);
     this.#backendUrlService.updateRadioUrl(lang.radios);
+    this.#backendUrlService.updateSuwarUrl(lang.surah!)
   }
 }

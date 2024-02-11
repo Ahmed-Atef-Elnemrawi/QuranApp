@@ -16,6 +16,8 @@ import { VolumeComponent } from '../../../shared/volume.component';
 import { Playlist } from '../../../core/model/playlist';
 import { PlayListComponent } from '../playlist/playlist.component';
 import { TrackNavigationComponent } from '../track-navigation/track-navigation.component';
+import { Track } from '../../../core/model/track';
+import { ClickAnimation } from '../../../shared/click-animation.directive';
 
 @Component({
   selector: 'playback-controls',
@@ -27,6 +29,7 @@ import { TrackNavigationComponent } from '../track-navigation/track-navigation.c
     FormsModule,
     PlayListComponent,
     TrackNavigationComponent,
+    ClickAnimation
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './playback-controls.component.html',
@@ -53,7 +56,13 @@ export class PlaybackControlsComponent implements AfterViewInit {
   @Input() isPlaying = false;
   @Input() formattedDuration = '';
   @Input() formattedCurrentTime = '';
-  @Input() playlist:Playlist[] = [];
+  @Input() playlist: Playlist[] = [];
+  @Input() track: Track | null = {
+    id: '',
+    title: '',
+    artist: '',
+    src: ''
+  };
 
   @Output() play = new EventEmitter<void>();
   @Output() pause = new EventEmitter<void>();
@@ -66,55 +75,66 @@ export class PlaybackControlsComponent implements AfterViewInit {
   @Output() clearPlaylists = new EventEmitter<void>();
   @Output() addPlaylist = new EventEmitter<Playlist>();
   @Output() deletePlaylist = new EventEmitter<string>();
+  @Output() renamePlaylist = new EventEmitter<{ name: string, newName: string }>()
 
   @HostListener('window:resize') onResize() {
     this.hostWidth.update((val) => (val = innerWidth));
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 
   onPlay($event: Event) {
-    this.play.emit();
+    if (this.track)
+      this.play.emit();
   }
 
   onPause($event: Event) {
-    this.pause.emit();
+    if (this.isPlaying)
+      this.pause.emit();
   }
 
   onStop() {
-    this.stop.emit();
+    if (this.isPlaying)
+      this.stop.emit();
   }
 
   onSeek(val: number) {
-    this.seek.emit(val);
+    if (this.track)
+      this.seek.emit(val);
   }
 
   onVolume(val: number) {
     this.volume.emit(val);
   }
 
-  onLoadPlaylist($event:Event) {
+  onLoadPlaylist($event: Event) {
     this.loadPlaylist.emit();
   }
 
-  onNext(){
-    this.next.emit();
+  onNext() {
+    if (this.track)
+      this.next.emit();
   }
 
-  onPrevious(){
-    this.previous.emit();
+  onPrevious() {
+    if (this.track)
+      this.previous.emit();
   }
 
-  onClearPlaylists(){
+  onClearPlaylists() {
     this.clearPlaylists.emit();
   }
 
-  onAddPlaylist(playlist:Playlist){
+  onAddPlaylist(playlist: Playlist) {
     this.addPlaylist.emit(playlist);
   }
 
-  onDeletePlaylist(key: string){
+  onDeletePlaylist(key: string) {
     this.deletePlaylist.emit(key);
+  }
+
+  onRenamePlaylist(name: string, newName: string) {
+    this.renamePlaylist.emit({ name, newName })
   }
 
   togglePlayList() {

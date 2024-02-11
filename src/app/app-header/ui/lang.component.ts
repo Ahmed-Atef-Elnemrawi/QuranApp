@@ -5,11 +5,16 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnInit,
   Output,
+  inject,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Language } from '../data-access/data.service';
 import { Utils } from '../../shared/dom.utils';
+import { APP_SETTING } from '../../core';
+import { tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Language } from '../../core/model/language';
 
 @Component({
   selector: 'header-lang',
@@ -40,20 +45,35 @@ import { Utils } from '../../shared/dom.utils';
       </div>
     </div>
   `,
-  styles:`
+  styles: `
   :host{
     z-index:40
   }
-  `
+  `,
 })
 export class LangComponent implements AfterViewInit {
-  #utils = new Utils()
+  #utils = new Utils();
+  #appSetting = inject(APP_SETTING);
 
   @Input() languages: Language[] | undefined;
   @Output() langChanged = new EventEmitter<Language>();
 
   value = 'english';
-  options: { [key: string]: string } = { العربية: 'ar', english: 'eng' };
+  options: { [key: string]: string } = {
+    العربية: 'Arabic',
+    english: 'English',
+  };
+
+  constructor() {
+    this.#appSetting.currentLanguage$
+      .pipe(
+        tap((val) => {
+          this.value = val === 'English' ? 'English' : 'العربية';
+        }),
+        takeUntilDestroyed()
+      )
+      .subscribe();
+  }
 
   ngAfterViewInit(): void {
     const options = this.#utils.queryById('options');
@@ -62,6 +82,8 @@ export class LangComponent implements AfterViewInit {
       options!.classList.toggle('hidden');
     });
 
+    this.#utils.listenTo(this.#utils.getHostEl(), 'mouseleave', () =>
+      options!.classList.add('hidden'))
   }
 
   onLangChange(lang: Language) {

@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class LocalStorageService {
-  private getItem<T>(key: string): T | null {
+  getItem<T>(key: string): T | null {
     const value = localStorage.getItem(key);
     return value ? JSON.parse(value) : null;
   }
 
-  private setItem(key: string, value: any): void {
+  setItem(key: string, value: any): void {
     localStorage.setItem(key, JSON.stringify(value));
   }
 
@@ -20,7 +20,7 @@ export class LocalStorageService {
   }
 
   selectLanguage(): string {
-    return this.getItem<string>('language') ?? 'eng';
+    return this.getItem<string>('language') ?? 'English';
   }
 
   setLanguage(lang: string): void {

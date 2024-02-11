@@ -3,4 +3,5 @@ export interface Language{
     native: string;
     reciters: string;
     radios: string;
+    surah:string
 }

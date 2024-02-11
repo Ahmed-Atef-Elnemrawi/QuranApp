@@ -1,16 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { BACKEND_URL } from '../../core';
 import { HttpClient } from '@angular/common/http';
-import {
-  combineLatest,
-  combineLatestAll,
-  filter,
-  map,
-  mergeScan,
-  switchMap,
-  tap,
-  zip,
-} from 'rxjs';
+import { delay, map, shareReplay, switchMap } from 'rxjs';
 import { Reciter } from '../../core/model/reciter';
 import { Surah } from '../../core/model/surah';
 
@@ -21,21 +12,45 @@ export class RecitersService {
 
   getReciters() {
     return this.#backendUrl.recitersUrl$.pipe(
-      switchMap((url) => this.#httpClient.get<{ reciters: Reciter[] }>(url))
+      switchMap((url) => this.#httpClient.get<{ reciters: Reciter[] }>(url)),
+      shareReplay(1)
+    );
+  }
+
+  getReciter(reciterId: string) {
+    return this.#backendUrl.recitersUrl$.pipe(
+      switchMap((url) =>
+        this.#httpClient.get<{ reciters: Reciter[] }>(
+          url + `&&reciter=${reciterId}`
+        )
+      )
+    );
+  }
+
+  getRewaya(reciterId: number, rewayaId: number) {
+    return this.#backendUrl.recitersUrl$.pipe(
+      switchMap((url) =>
+        this.#httpClient.get<{ reciters: Reciter[] }>(
+          url + `&reciter=${reciterId}&rewaya=${rewayaId}`
+        )
+      )
     );
   }
 
   getSuraList() {
-    return this.#httpClient
-      .get<{ suwar: Surah[] }>('https://mp3quran.net/api/v3/suwar')
-      .pipe(
-        map(({ suwar }) =>
-          suwar.map((surah) => ({
-            id: surah.id.toString().padStart(3, '0'),
-            name: surah.name,
-            type: surah.makkia,
-          }))
+    return this.#backendUrl.suwarUrl$.pipe(
+      switchMap((url) =>
+        this.#httpClient.get<{ suwar: Surah[] }>(url).pipe(
+          map(({ suwar }) =>
+            suwar.map((surah) => ({
+              id: surah.id.toString().padStart(3, '0'),
+              name: surah.name,
+              type: surah.makkia,
+            }))
+          )
         )
-      );
+      ),
+      shareReplay(1)
+    );
   }
 }

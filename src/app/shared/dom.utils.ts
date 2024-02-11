@@ -27,6 +27,10 @@ export class Utils {
     return this.el.nativeElement.querySelector(`#${id}`);
   }
 
+  queryAllById(id: string): any{
+    return this.el.nativeElement.querySelectorAll(`#${id}`)
+  }
+
   queryByClass(className: string): HTMLElement | null {
     return this.el.nativeElement.querySelector(`.${className}`);
   }

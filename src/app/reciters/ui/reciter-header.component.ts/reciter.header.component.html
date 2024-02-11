@@ -1,0 +1,92 @@
+@if (reciter && reciter.moshaf) {
+<div
+  class="@apply w-[96%] sm:w-fit h-fit flex gap-x-3 sm:gap-x-5 place-content-center place-items-center mt-14 mb-3 py-5 px-5 sm:px-10 shadow-sm rounded-sm bg-container mx-auto"
+>
+  <p title="reciter name" class="hidden sm:block cursor-default">
+    {{ reciter.name }}
+  </p>
+
+  <!-- moshaf menu-->
+  <div class="w-fit flex flex-col relative">
+    <input
+      title="surah type"
+      class="relative w-fit max-w-48 text-ellipsis px-1 bg-transparent border-0 outline-none cursor-pointer text-center"
+      [value]="reciter.moshaf.at(selectedMoshaf())?.name"
+      readonly
+      (click)="onOpenMoshafMenu()"
+    />
+
+    <div
+      *ngIf="isActiveMoshafMenu"
+      class="w-52 h-40 overflow-y-scroll flex flex-col absolute top-8 bg-container py-6 rounded-sm shadow-lg z-50 ring-1 ring-primary"
+      (mouseenter)="onOpenMoshafMenu()"
+      (mouseleave)="onCloseMoshafMenu()"
+    >
+      <div
+        class="overflow-y-scroll px-2.5 flex-col space-y-2 place-items-center place-content-center"
+      >
+        @for (moshaf of reciter.moshaf; track $index) {
+        <button
+          class="w-full hover:bg-primary px-2 py-1 rounded-sm"
+          (click)="onSelectMoshaf(reciter.id, moshaf)"
+          (click)="updateSelectedMoshaf($index)"
+        >
+          {{ moshaf.name }}
+        </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <p title="surah count" class="cursor-default flex gap-x-2 capitalize">
+    <span>{{ reciter.moshaf[0].surah_total }}</span>
+    <span class="max-sm:hidden">tracks</span>
+  </p>
+
+  <button
+    id="play-btn"
+    (click)="onPlayPlaylist(reciter.name, tracks)"
+    class="h-fit w-fit"
+    animate-click
+  >
+    <svg
+      class="fill-text w-4 h-4 sm:h-5 sm:w-5"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      stroke-width="0.00024000000000000003"
+    >
+      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g
+        id="SVGRepo_tracerCarrier"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="0.144"
+      ></g>
+      <g id="SVGRepo_iconCarrier">
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M7.23832 3.04445C5.65196 2.1818 3.75 3.31957 3.75 5.03299L3.75 18.9672C3.75 20.6806 5.65196 21.8184 7.23832 20.9557L20.0503 13.9886C21.6499 13.1188 21.6499 10.8814 20.0503 10.0116L7.23832 3.04445ZM2.25 5.03299C2.25 2.12798 5.41674 0.346438 7.95491 1.72669L20.7669 8.6938C23.411 10.1317 23.411 13.8685 20.7669 15.3064L7.95491 22.2735C5.41674 23.6537 2.25 21.8722 2.25 18.9672L2.25 5.03299Z "
+        ></path>
+      </g>
+    </svg>
+  </button>
+
+  <button
+    id="playlist-btn"
+    class="w-fit h-fit"
+    (click)="onCreatePlaylist(reciter.name, tracks)"
+    animate-click
+  >
+    <svg
+      class="fill-text w-4 h-4 sm:h-5 sm:w-5"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M8,7,2,11V3ZM3,14.5H21a1,1,0,0,0,0-2H3a1,1,0,0,0,0,2ZM10,7a1,1,0,0,0,1,1H21a1,1,0,0,0,0-2H11A1,1,0,0,0,10,7ZM3,21H21a1,1,0,0,0,0-2H3a1,1,0,0,0,0,2Z"
+      />
+    </svg>
+  </button>
+</div>
+}

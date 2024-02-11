@@ -12,6 +12,10 @@ import { SliderComponent } from '../../../shared/slider.component';
 import { VolumeComponent } from '../../../shared/volume.component';
 import { PlayListComponent } from '../playlist/playlist.component';
 import { Playlist } from '../../../core/model/playlist';
+import { Track } from '../../../core/model/track';
+import { ClickAnimation } from '../../../shared/click-animation.directive';
+import { single } from 'rxjs';
+import { Utils } from '../../../shared/dom.utils';
 
 @Component({
   selector: 'sm-playback-controls',
@@ -22,6 +26,7 @@ import { Playlist } from '../../../core/model/playlist';
     VolumeComponent,
     FormsModule,
     PlayListComponent,
+    ClickAnimation
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './playback-controls.component.html',
@@ -33,8 +38,11 @@ import { Playlist } from '../../../core/model/playlist';
   `,
 })
 export class SmallPlaybackControlsComponent {
+  private utils = new Utils();
+
   rangeValue = 0;
   showPlayList = signal(false);
+  showTrackInfo = signal(false);
 
   @Input() set setRangeValue(val: number) {
     this.rangeValue = val;
@@ -42,6 +50,9 @@ export class SmallPlaybackControlsComponent {
   @Input() maxRangeValue = 0;
   @Input() isPlaying = false;
   @Input() playlist: Playlist[] = [];
+  @Input() track: Track | null = null;
+  @Input() formattedCurrentTime = '';
+  @Input() formattedDuration = '';
 
   @Output() play = new EventEmitter<void>();
   @Output() pause = new EventEmitter<void>();
@@ -53,29 +64,36 @@ export class SmallPlaybackControlsComponent {
   @Output() clearPlaylists = new EventEmitter<void>();
   @Output() addPlaylist = new EventEmitter<Playlist>();
   @Output() deletePlaylist = new EventEmitter<string>();
+  @Output() renamePlaylist = new EventEmitter<{ name: string, newName: string }>();
 
   onPlay() {
-    this.play.emit();
+    if (this.track)
+      this.play.emit();
   }
 
   onPause() {
-    this.pause.emit();
+    if (this.isPlaying)
+      this.pause.emit();
   }
 
   onStop() {
-    this.stop.emit();
+    if (this.isPlaying)
+      this.stop.emit();
   }
 
   onNext() {
-    this.next.emit();
+    if (this.track)
+      this.next.emit();
   }
 
   onPrevious() {
-    this.previous.emit();
+    if (this.track)
+      this.previous.emit();
   }
 
   onSeek(val: number) {
-    this.seek.emit(val);
+    if (this.track)
+      this.seek.emit(val);
   }
 
   onLoadPlaylist() {
@@ -90,11 +108,21 @@ export class SmallPlaybackControlsComponent {
     this.deletePlaylist.emit(key);
   }
 
+  onRenamePlaylist(name: string, newName: string) {
+    this.renamePlaylist.emit({ name, newName });
+  }
+
   onAddPlaylist(playList: Playlist) {
     this.addPlaylist.emit(playList);
   }
 
   togglePlayList() {
     this.showPlayList.update((val) => !val);
+  }
+
+  toggleTrackInfo($event: Event) {
+    if (this.track) {
+      this.showTrackInfo.update(val => !val)
+    }
   }
 }

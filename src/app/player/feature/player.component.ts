@@ -15,6 +15,9 @@ import { PlaybackControlsComponent } from '../ui/playback-controls/playback-cont
 import { SmallPlaybackControlsComponent } from '../ui/sm-playback-controls/playback-controls.component';
 import { AudioStreamService } from '../../core/audio-stream.service';
 import { AudioState } from '../../core/audio-state.service';
+import { PlaylistStreamService } from '../../core/playlist-stream.service';
+import { Observable, Subject } from 'rxjs';
+import { Track } from '../../core/model/track';
 
 function fn<T>(value: T) {
   return (val: T) => (val = value);
@@ -38,8 +41,12 @@ function fn<T>(value: T) {
 })
 export class PlayerComponent implements OnDestroy {
   #audioService = inject(AudioStreamService);
+  #playlistStream = inject(PlaylistStreamService);
   #playListService = inject(PlaylistService);
   #deviceDetector = inject(DeviceDetectorService);
+
+  #playlistsSrc = new Subject<Playlist[]>();
+  playlists$ = this.#playlistsSrc.asObservable();
 
   isPlaying = signal(false);
   formattedDuration = signal('');
@@ -47,7 +54,7 @@ export class PlayerComponent implements OnDestroy {
   currentTime = signal(0);
   duration = signal(0);
 
-  playlists = signal<Playlist[]>([]);
+  currentTrack!: Observable<Track | null>;
 
   isMobile = this.#deviceDetector.isMobile();
   isTablet = this.#deviceDetector.isTablet();
@@ -59,55 +66,83 @@ export class PlayerComponent implements OnDestroy {
   }
 
   ngOnInit(): void {
-    this.#audioService.getState().subscribe((state) => this.updateState(state));
+    this.#audioService
+      .getState()
+      .subscribe((state) => this.updateState(state));
+
+    this.currentTrack = this.#playlistStream
+      .getCurrentTrack;
   }
 
   onPlay() {
-    this.#audioService.play();
+    this.#audioService
+      .play();
   }
 
   onPause() {
-    this.#audioService.pause();
+    this.#audioService
+      .pause();
   }
 
   onSeek(val: number) {
-    this.#audioService.seekTo(val);
+    this.#audioService
+      .seekTo(val);
   }
 
   onStop() {
-    this.#audioService.stop();
+    this.#audioService
+      .stop();
   }
 
   onVolume(val: number) {
-    this.#audioService.changeVolume(val);
+    this.#audioService
+      .changeVolume(val);
   }
 
   onNext() {
-    console.log('next track');
+    this.#playlistStream
+      .nextTrack();
   }
 
   onPrevious() {
-    console.log('previous track');
+    this.#playlistStream
+      .previousTrack();
   }
 
   async loadPlaylist() {
-    const playlist = await this.#playListService.getAllPlaylists();
-    this.playlists.update((val) => (val = playlist));
+    await this.#playListService
+      .getAllPlaylists()
+      .then((val) => this.#playlistsSrc.next(val));
   }
 
   async addPlaylist(playlist: Playlist) {
-    await this.#playListService.addPlaylist(playlist);
-    await this.loadPlaylist();
+    await this.#playListService
+      .addPlaylist(playlist)
+      .then(() => this.loadPlaylist());
   }
 
   async clearPlaylists() {
-    await this.#playListService.clearPlaylist();
-    await this.loadPlaylist();
+    await this.#playListService.clearPlaylist().then(() => this.loadPlaylist());
   }
 
   async deletePlaylist(name: string) {
-    await this.#playListService.removePlaylist(name);
-    await this.loadPlaylist();
+    await this.#playListService
+      .removePlaylist(name)
+      .then(() => this.loadPlaylist());
+  }
+
+  async renamePlaylist(name: string, newName: string) {
+    if (name !== newName) {
+      await this.#playListService
+        .getPlaylist(name)
+        .then((target) => {
+          if (target) {
+            target.name = newName;
+            this.deletePlaylist(name);
+            this.addPlaylist(target);
+          }
+        });
+    }
   }
 
   private updateState(state: AudioState) {

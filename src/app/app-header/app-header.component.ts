@@ -3,8 +3,9 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { APP_SETTING } from '../core';
 import { LangComponent } from './ui/lang.component';
 import { ModeComponent } from './ui/mode.component';
-import { DataService, Language } from './data-access/data.service';
 import { SearchComponent } from './ui/search.component';
+import { DataService } from './data-access/data.service';
+import { Language } from '../core/model/language';
 
 
 @Component({
